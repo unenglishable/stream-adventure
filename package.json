@@ -7,6 +7,7 @@
   "dependencies": {
     "concat-stream": "^1.4.6",
     "split": "^0.3.0",
-    "through": "^2.3.4"
+    "through": "^2.3.4",
+    "through2-map": "^1.4.0"
   }
 }
