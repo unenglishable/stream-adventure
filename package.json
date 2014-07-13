@@ -3,5 +3,8 @@
   "version": "0.0.0",
   "repository": {
     "type": "git"
+  },
+  "dependencies": {
+    "through": "^2.3.4"
   }
 }
