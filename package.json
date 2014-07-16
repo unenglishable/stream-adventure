@@ -10,6 +10,7 @@
     "split": "^0.3.0",
     "through": "^2.3.4",
     "through2-map": "^1.4.0",
+    "trumpet": "^1.6.4",
     "websocket-stream": "^0.6.0"
   }
 }
