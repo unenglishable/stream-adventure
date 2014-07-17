@@ -1,3 +1,4 @@
+var through = require('through');
 var combine = require('stream-combiner');
 
 var crypto = require('crypto');
@@ -13,16 +14,20 @@ var fs = require('fs');
 var tar = require('tar');
 var untar = tar.Parse();
 untar.on('entry', function (entry) {
-  var md5 = crypto.createHash('md5');
-  filename = entry.path;
   if (entry.type === 'File') {
-    entry.on('data', function (data) {
-      md5.update(data);
-    });
-    entry.on('end', function () {
-      var hash = md5.digest('hex');
-      console.log(hash+' '+filename);
-    });
+    var md5 = crypto.createHash('md5', { encoding: 'hex'});
+    var tr = through(null, end);
+
+    combine(
+      entry,
+      md5,
+      tr
+      ).pipe(process.stdout);
+
+    function end () {
+      console.error("no, fuck you");
+      this.queue(' ' + entry.path + '\n');
+    }
   }
 });
 

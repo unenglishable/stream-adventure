@@ -48,3 +48,11 @@ COMBINER
 To access a variable from both write and end of a through, explicitly
 define both write() and end() as their own functions and define a
 variable for the through instance.
+
+
+SECRETZ
+-------
+
+Concluded that process.stdout shouldn't be used in combine()
+stream because (from documentation) it is different from other
+streams.  By different, they mean that it is blocking.
