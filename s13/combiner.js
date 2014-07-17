@@ -1,26 +1,34 @@
+var combine = require('stream-combiner');
+var split = require('split');
 var through = require('through');
+var zlib = require('zlib');
 
 module.exports = function() {
-  var genre = '';
   var books = [];
-  var JSONList = [];
-  return through(function (data) {
-    console.log(data)
-    data = data.split('\n');
-    data.forEach(function (line) {
-      line= JSON.parse(line);
-      if (line.type === 'genre') {
-        if (genre != '') {
-          JSONList.push(JSON.stringify({name: genre, books: books}));
-          console.log(JSONList.join('\n'));
-          books = [];
+  var genre = '';
+  return combine(
+      split('\n'),
+      through(function (data) {
+        if (data != '') {
+          data = JSON.parse(data);
+          if (data.type === 'genre' || data.type === '') {
+            if (genre != '') {
+              this.queue(JSON.stringify({name: genre, books: books})+'\n');
+            }
+            genre = data.name;
+            books = [];
+          }
+          else if (data.type === 'book') {
+            books.push(data.name);
+          }
+          else {
+            console.error('Oh shit!');
+          }
         }
-        genre = line.name;
-      }
-      else if (line.type === 'book') {
-        books.push(line.name);
-      }
-    });
-    console.log(JSONList.join('\n'));
-  });
+        else {
+          this.queue(JSON.stringify({name: genre, books: books})+'\n');
+        }
+      }),
+      zlib.createGzip()
+        );
 }
