@@ -40,3 +40,11 @@ that entry.  If not, that entry is created with a count of 1.
 
 On end, through calls the "counter" stream's setCount() and passes in
 the counts object that the method has been creating.
+
+
+COMBINER
+--------
+
+To access a variable from both write and end of a through, explicitly
+define both write() and end() as their own functions and define a
+variable for the through instance.
